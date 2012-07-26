@@ -5,6 +5,7 @@ The imagined use case is to have a collection of utility scripts that you want t
 Usage: 
 
 **NOTE: this example boots up a Bantu server and makes a client request in the same process. Obviously you would never do this in a production situation.
+**NOTE: see the test/ dir for a working example
 
 var bantu = require('../index.js');
 
