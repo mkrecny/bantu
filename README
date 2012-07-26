@@ -1,3 +1,11 @@
+Bantu (an African 'talking-drum') is an HTTP server that will simply execute any script on the host machine specified by an authenticated client.
+
+The imagined use case is to have a collection of utility scripts that you want to execute without having to ssh in to a remote server.
+
+Usage: 
+
+**NOTE: this example boots up a Bantu server and makes a client request in the same process. Obviously you would never do this in a production situation.
+
 var bantu = require('../index.js');
 
 var auth_user = 'foo';
