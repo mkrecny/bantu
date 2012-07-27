@@ -1,14 +1,14 @@
 Bantu (an African 'talking drum') is an HTTP server that will simply execute any commands on the host machine specified by an authenticated client.
 
-cURL usage:
+cURL usage example: (kill all python processes running on a server)
 
-**NOTE: this example assumes a bantu server running at http://bantu.example.com
+**NOTE: this example assumes a bantu server running at http://bantu.someurl.com
 
 curl --user foo:bar \
---data run="ps -ef | grep fork | grep -v grep | awk '{print \$2}' | xargs kill -9" \
-http://bantu.example.com/execute
+--data run="ps -ef | grep python | grep -v grep | awk '{print \$2}' | xargs kill -9" \
+http://bantu.someurl.com/execute
 
-Node usage: 
+Node usage example: (kill all node processes running on a server)
 
 **NOTE: this example boots up a Bantu server and makes a client request in the same process. Obviously you would never do this in a production situation.
 **NOTE: see the test/ dir for a working example
