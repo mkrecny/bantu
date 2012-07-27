@@ -1,8 +1,10 @@
 var respond = require('../lib/respond.js')
-, spawn = require('child_process').spawn;
+, spawn = require('child_process').spawn
+, exec = require('child_process').exec;
 
-function run(path, cb){
-  var child = spawn(path);  
+function run(cmd, cb){
+  console.log(cmd.split());
+  var child = spawn(cmd);  
   var data = '';
   var error = '';
   child.stdout.setEncoding('utf8');
@@ -19,9 +21,23 @@ function run(path, cb){
   });
 };
 
+function exec(cmd, cb){
+  child = exec(cmd,
+    function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+      console.log('exec error: ' + error);
+    }
+  });
+}
+
 exports.execute = function(req, res){
   console.log('Server: running', req.body);
-  run(req.body.run, function(e,r){
+  /*run(req.body.run, function(e,r){
+    respond(e, r, res);
+  });*/
+  exec(req.body.run, function(e,r){
     respond(e, r, res);
   });
 };
