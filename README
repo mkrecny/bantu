@@ -1,24 +1,33 @@
-Bantu (an African 'talking-drum') is an HTTP server that will simply execute any script on the host machine specified by an authenticated client.
+Bantu (an African 'talking drum') is an HTTP server that will simply execute any commands on the host machine specified by an authenticated client.
 
-The imagined use case is to have a collection of utility scripts that you want to execute without having to ssh in to a remote server.
+cURL usage:
 
-Usage: 
+**NOTE: this example assumes a bantu server running at http://bantu.example.com
+
+curl --user foo:bar \
+--data run="ps -ef | grep fork | grep -v grep | awk '{print \$2}' | xargs kill -9" \
+http://bantu.example.com/execute
+
+Node usage: 
 
 **NOTE: this example boots up a Bantu server and makes a client request in the same process. Obviously you would never do this in a production situation.
 **NOTE: see the test/ dir for a working example
 
-var bantu = require('../index.js');
-
-var auth_user = 'foo';
+// defined user and pass for basic auth
+var auth_user = 'foo'; 
 var auth_pwd = 'bar';
 
+// create a bantu client
 var client = bantu.createClient();
+
+// create a bantu server, the server object will be passed in the callback
 var server = bantu.createServer(auth_user, auth_pwd, 3000, function(server){
 
+  // define request options
   var opts = {
     host : 'localhost',
     port : '3000',
-    run : './sample_script.sh',
+    run : "ps -ef | grep node | grep -v grep | awk '{print $2}' | xargs kill -9 ", //kill all node procs
     username : auth_user,
     password : auth_pwd 
   };
@@ -26,11 +35,6 @@ var server = bantu.createServer(auth_user, auth_pwd, 3000, function(server){
   console.log("Client: making request with opts:", opts);
   client.exec(opts, function(response){
     console.log("Client: received response:", response);
-    if (response.data==="Hi I'm Simple\n"){
-      console.log('TEST PASS');
-    } else {
-      console.log('TEST FAIL');
-    }
     process.exit();
   });
 
